@@ -12,6 +12,7 @@ unsigned int port = 31235;
 const char* unixsocket = NULL;
 unsigned long clientflag = 0;
 
+// Fungsi untuk terhubung ke database
 MYSQL* connect_db() {
     MYSQL* conn = mysql_init(0);
     if (conn) {
@@ -27,6 +28,7 @@ MYSQL* connect_db() {
     return conn;
 }
 
+// Fungsi untuk menambah buku
 void create_book(const string& title, const string& author, const string& publisher, const string& year, const string& category) {
     MYSQL* conn = connect_db();
     if (conn) {
@@ -40,6 +42,7 @@ void create_book(const string& title, const string& author, const string& publis
     }
 }
 
+// Fungsi untuk menampilkan semua buku
 void get_books() {
     MYSQL* conn = connect_db();
     if (conn) {
@@ -66,6 +69,7 @@ void get_books() {
     }
 }
 
+// Fungsi untuk memperbarui buku
 void update_book(int book_id, const string& title, const string& author, const string& publisher, const string& year, const string& category) {
     MYSQL* conn = connect_db();
     if (conn) {
@@ -80,6 +84,7 @@ void update_book(int book_id, const string& title, const string& author, const s
     }
 }
 
+// Fungsi untuk menghapus buku
 void delete_book(int book_id) {
     MYSQL* conn = connect_db();
     if (conn) {
@@ -94,6 +99,16 @@ void delete_book(int book_id) {
     }
 }
 
+// Fungsi menampilkan header perpustakaan
+void display_header() {
+    cout << "**********************************************\n";
+    cout << "*                                            *\n";
+    cout << "*          Perpustakaan Esa Unggul           *\n";
+    cout << "*                                            *\n";
+    cout << "**********************************************\n" << endl;
+}
+
+// Fungsi menu admin
 void admin_menu() {
     int choice;
     while (true) {
@@ -152,6 +167,7 @@ void admin_menu() {
     }
 }
 
+// Fungsi menu user
 void user_menu() {
     int choice;
     while (true) {
@@ -171,7 +187,38 @@ void user_menu() {
     }
 }
 
+// Fungsi login
+bool login() {
+    string username, password;
+    cout << "Masukkan username: ";
+    cin >> username;
+    cout << "Masukkan password: ";
+    cin >> password;
+
+    // Ganti dengan kredensial yang valid
+    if (username == "admin" && password == "adminpass") {
+        return true;
+    } else if (username == "user" && password == "userpass") {
+        return true;
+    } else {
+        cout << "Username atau password salah." << endl;
+        return false;
+    }
+}
+
+// Fungsi utama
 int main() {
+    display_header();
+
+    cout << "Informasi Login:\n";
+    cout << "Username: admin, Password: adminpass" << endl;
+    cout << "Username: user, Password: userpass  " << endl;
+
+    if (!login()) {
+        cout << "Gagal login. Program keluar." << endl;
+        return 1;
+    }
+
     while (true) {
         int role;
         cout << "Pilih peran:\n";
@@ -186,6 +233,12 @@ int main() {
         } else if (role == 2) {
             user_menu();
         } else if (role == 3) {
+            cout << endl;
+            cout << "**********************************************" << endl;
+            cout << "*                                            *" << endl;
+            cout << "*               Terima Kasih                 *" << endl;
+            cout << "*                                            *" << endl;
+            cout << "**********************************************" << endl;
             break;
         } else {
             cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
